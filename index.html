@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Archive</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #070707;
+    color: #e8e3dc;
+    font-family: Georgia, "Times New Roman", serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   ATMOSPHERIC BACKGROUND
+========================================================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 15%,
+            rgba(100, 20, 20, 0.22),
+            transparent 45%
+        ),
+        radial-gradient(
+            ellipse at 15% 80%,
+            rgba(55, 10, 10, 0.15),
+            transparent 40%
+        ),
+        radial-gradient(
+            ellipse at 90% 70%,
+            rgba(40, 15, 15, 0.12),
+            transparent 40%
+        );
+
+    z-index: -3;
+}
+
+
+/* =========================================================
+   FILM GRAIN
+========================================================= */
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+
+    pointer-events: none;
+
+    opacity: 0.055;
+
+    background-image:
+        repeating-radial-gradient(
+            circle at 0 0,
+            transparent 0,
+            rgba(255,255,255,0.5) 1px,
+            transparent 2px
+        );
+
+    animation: grain 0.25s steps(2) infinite;
+
+    z-index: 100;
+}
+
+@keyframes grain {
+
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(2%, -1%);
+    }
+
+    50% {
+        transform: translate(-1%, 2%);
+    }
+
+    75% {
+        transform: translate(1%, 1%);
+    }
+
+    100% {
+        transform: translate(-2%, -1%);
+    }
+
+}
+
+
+/* =========================================================
+   SCANLINES
+========================================================= */
+
+.scanlines {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 3px,
+            rgba(255,255,255,0.015) 4px
+        );
+
+    z-index: 90;
+}
+
+
+/* =========================================================
+   FLOATING DUST
+========================================================= */
+
+.dust {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+
+    background: #aaa;
+
+    border-radius: 50%;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    animation: floatDust linear infinite;
+}
+
+.dust:nth-child(1) {
+    left: 10%;
+    animation-duration: 13s;
+}
+
+.dust:nth-child(2) {
+    left: 25%;
+    animation-duration: 18s;
+    animation-delay: 3s;
+}
+
+.dust:nth-child(3) {
+    left: 40%;
+    animation-duration: 15s;
+    animation-delay: 5s;
+}
+
+.dust:nth-child(4) {
+    left: 60%;
+    animation-duration: 20s;
+    animation-delay: 2s;
+}
+
+.dust:nth-child(5) {
+    left: 75%;
+    animation-duration: 17s;
+    animation-delay: 6s;
+}
+
+.dust:nth-child(6) {
+    left: 90%;
+    animation-duration: 14s;
+    animation-delay: 4s;
+}
+
+@keyframes floatDust {
+
+    0% {
+        bottom: -5%;
+        opacity: 0;
+        transform: translateX(0);
+    }
+
+    15% {
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: translateX(40px);
+    }
+
+    85% {
+        opacity: 0.2;
+    }
+
+    100% {
+        bottom: 105%;
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+}
+
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+.container {
+    width: min(900px, 90%);
+    margin: auto;
+}
+
+.page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 50px 0;
+}
+
+
+/* =========================================================
+   LANDING PAGE
+========================================================= */
+
+#landing {
+
+    text-align: center;
+
+    flex-direction: column;
+
+    position: relative;
+
+    animation: pageAppear 2s ease forwards;
+}
+
+@keyframes pageAppear {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   CLASSIFIED LABEL
+========================================================= */
+
+.classified {
+
+    color: #8f2525;
+
+    letter-spacing: 6px;
+
+    font-size: 0.68rem;
+
+    margin-bottom: 25px;
+
+    font-family: monospace;
+
+    animation:
+        classifiedFlicker 4s infinite,
+        fadeUp 1.5s ease forwards;
+
+}
+
+@keyframes classifiedFlicker {
+
+    0%,
+    90%,
+    100% {
+        opacity: 1;
+    }
+
+    91% {
+        opacity: 0.35;
+    }
+
+    92% {
+        opacity: 1;
+    }
+
+    94% {
+        opacity: 0.5;
+    }
+
+    95% {
+        opacity: 1;
+    }
+
+}
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   CAT
+========================================================= */
+
+.cat {
+
+    font-size: 6rem;
+
+    margin-bottom: 20px;
+
+    filter:
+        grayscale(1)
+        brightness(0.75);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.6s ease,
+        filter 0.6s ease,
+        text-shadow 0.6s ease;
+
+    animation:
+        catAppear 2s ease,
+        catFloat 5s ease-in-out infinite;
+
+}
+
+@keyframes catAppear {
+
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+@keyframes catFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+}
+
+.cat:hover {
+
+    filter:
+        grayscale(0)
+        brightness(1);
+
+    transform: scale(1.12);
+
+    text-shadow:
+        0 0 10px #8d1717,
+        0 0 30px #8d1717,
+        0 0 60px rgba(141, 23, 23, 0.5);
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+h1 {
+
+    font-size: clamp(3rem, 10vw, 6rem);
+
+    letter-spacing: 9px;
+
+    font-weight: normal;
+
+    text-transform: uppercase;
+
+    color: #e9e5df;
+
+    text-shadow:
+        0 0 20px rgba(255,255,255,0.04);
+
+    animation:
+        titleReveal 2s ease forwards;
+
+}
+
+@keyframes titleReveal {
+
+    from {
+        opacity: 0;
+        letter-spacing: 20px;
+    }
+
+    to {
+        opacity: 1;
+        letter-spacing: 9px;
+    }
+
+}
+
+
+/* =========================================================
+   TYPEWRITER SUBTITLE
+========================================================= */
+
+.subtitle {
+
+    margin-top: 18px;
+
+    color: #888;
+
+    font-family: monospace;
+
+    letter-spacing: 2px;
+
+    min-height: 20px;
+
+}
+
+.cursor {
+
+    display: inline-block;
+
+    width: 7px;
+
+    height: 15px;
+
+    background: #8f2525;
+
+    margin-left: 4px;
+
+    animation: blink 0.8s infinite;
+
+}
+
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   ENTER BUTTON
+========================================================= */
+
+.enter {
+
+    margin-top: 50px;
+
+    padding: 15px 38px;
+
+    border: 1px solid #6f2020;
+
+    background: rgba(10,10,10,0.7);
+
+    color: #ddd;
+
+    font-family: monospace;
+
+    letter-spacing: 3px;
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        background 0.4s,
+        box-shadow 0.4s,
+        transform 0.3s;
+
+}
+
+.enter::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: -100%;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: #701b1b;
+
+    transition: left 0.4s;
+
+    z-index: -1;
+
+}
+
+.enter:hover::before {
+    left: 0;
+}
+
+.enter:hover {
+
+    color: white;
+
+    box-shadow:
+        0 0 20px rgba(112,27,27,0.4),
+        0 0 50px rgba(112,27,27,0.15);
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================================================
+   ARCHIVE
+========================================================= */
+
+#archive {
+
+    display: none;
+
+    padding-top: 80px;
+
+    padding-bottom: 80px;
+
+    animation: archiveAppear 1s ease forwards;
+
+}
+
+@keyframes archiveAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   ARCHIVE HEADER
+========================================================= */
+
+.archive-header {
+
+    text-align: center;
+
+    margin-bottom: 60px;
+
+}
+
+.archive-header h2 {
+
+    font-size: clamp(2rem, 7vw, 4rem);
+
+    letter-spacing: 5px;
+
+    font-weight: normal;
+
+}
+
+.archive-header p {
+
+    color: #777;
+
+    font-family: monospace;
+
+    margin-top: 10px;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* =========================================================
+   FILE GRID
+========================================================= */
+
+.files {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 18px;
+
+}
+
+
+/* =========================================================
+   FILE CARDS
+========================================================= */
+
+.file {
+
+    border: 1px solid #292929;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.015),
+            transparent
+        ),
+        #101010;
+
+    padding: 30px 25px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+.file::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    height: 100%;
+
+    width: 3px;
+
+    background: #701b1b;
+
+    transform: scaleY(0);
+
+    transform-origin: bottom;
+
+    transition: transform 0.35s ease;
+
+}
+
+.file:hover {
+
+    transform: translateY(-6px);
+
+    border-color: #542020;
+
+    background: #141414;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.5);
+
+}
+
+.file:hover::before {
+
+    transform: scaleY(1);
+
+}
+
+.file-number {
+
+    color: #702020;
+
+    font-family: monospace;
+
+    font-size: 0.75rem;
+
+}
+
+.file h3 {
+
+    margin-top: 15px;
+
+    font-size: 1.25rem;
+
+    font-weight: normal;
+
+}
+
+.file p {
+
+    margin-top: 10px;
+
+    color: #777;
+
+    font-size: 0.85rem;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   OPEN-WHEN BUTTONS
+========================================================= */
+
+.open-when-list {
+
+    display: grid;
+
+    gap: 12px;
+
+    margin-top: 25px;
+
+}
+
+.open-when {
+
+    width: 100%;
+
+    text-align: left;
+
+    padding: 18px 20px;
+
+    border: 1px solid #292929;
+
+    background: #0c0c0c;
+
+    color: #ddd;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+
+}
+
+.open-when:hover {
+
+    background: #151515;
+
+    border-color: #702020;
+
+    transform: translateX(5px);
+
+}
+
+.open-when span {
+
+    color: #8f2525;
+
+    font-family: monospace;
+
+    font-size: 0.7rem;
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(60,10,10,0.12),
+            rgba(0,0,0,0.94)
+        );
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 200;
+
+    backdrop-filter: blur(4px);
+
+}
+
+.modal-content {
+
+    width: min(650px, 100%);
+
+    max-height: 85vh;
+
+    overflow-y: auto;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.015),
+            transparent
+        ),
+        #111;
+
+    border: 1px solid #442020;
+
+    padding: 40px;
+
+    position: relative;
+
+    box-shadow:
+        0 0 60px #000,
+        0 0 100px rgba(60,10,10,0.15);
+
+    animation: modalOpen 0.4s ease forwards;
+
+}
+
+@keyframes modalOpen {
+
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+.close {
+
+    position: absolute;
+
+    right: 20px;
+
+    top: 15px;
+
+    background: none;
+
+    border: none;
+
+    color: #777;
+
+    font-size: 1.5rem;
+
+    cursor: pointer;
+
+    transition: color 0.2s;
+
+}
+
+.close:hover {
+    color: white;
+}
+
+.modal-content h2 {
+
+    font-size: 2rem;
+
+    font-weight: normal;
+
+    margin-bottom: 20px;
+
+}
+
+.modal-content p {
+
+    color: #bbb;
+
+    line-height: 1.8;
+
+    margin-bottom: 15px;
+
+}
+
+.red {
+    color: #a52b2b;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+
+    text-align: center;
+
+    color: #444;
+
+    font-family: monospace;
+
+    font-size: 0.7rem;
+
+    padding: 40px 0;
+
+    letter-spacing: 2px;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .cat {
+        font-size: 4.5rem;
+    }
+
+    h1 {
+        letter-spacing: 4px;
+    }
+
+    .modal-content {
+        padding: 30px 22px;
+    }
+
+    .files {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        scroll-behavior: auto !important;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     ATMOSPHERIC EFFECTS
+===================================================== -->
+
+<div class="scanlines"></div>
+
+<div class="dust"></div>
+<div class="dust"></div>
+<div class="dust"></div>
+<div class="dust"></div>
+<div class="dust"></div>
+<div class="dust"></div>
+
+
+<!-- =====================================================
+     LANDING PAGE
+===================================================== -->
+
+<section id="landing" class="page">
+
+    <div class="classified">
+        CLASSIFIED ARCHIVE // ACCESS RESTRICTED
+    </div>
+
+
+    <div
+        class="cat"
+        onclick="catClicked()"
+        title="The cat is watching."
+    >
+        🐈‍⬛
+    </div>
+
+
+    <h1>
+        The Archive
+    </h1>
+
+
+    <p class="subtitle">
+        <span id="typewriter"></span><span class="cursor"></span>
+    </p>
+
+
+    <button
+        class="enter"
+        onclick="enterArchive()"
+    >
+        [ ENTER ARCHIVE ]
+    </button>
+
+</section>
+
+
+
+<!-- =====================================================
+     ARCHIVE
+===================================================== -->
+
+<section
+    id="archive"
+    class="container"
+>
+
+    <div class="archive-header">
+
+        <div class="classified">
+            SUBJECT: [RAIN]
+        </div>
+
+        <h2>
+            THE ARCHIVE
+        </h2>
+
+        <p>
+            ACCESS GRANTED // FILES UNLOCKED
+        </p>
+
+    </div>
+
+
+    <div class="files">
+
+
+        <div
+            class="file"
+            onclick="openFile('case')"
+        >
+
+            <span class="file-number">
+                CASE FILE #001
+            </span>
+
+            <h3>
+                How We Met
+            </h3>
+
+            <p>
+                The beginning of a rather suspicious friendship.
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="file"
+            onclick="openFile('things')"
+        >
+
+            <span class="file-number">
+                FILE #002
+            </span>
+
+            <h3>
+                Things I Like About You
+            </h3>
+
+            <p>
+                A completely unbiased investigation.
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="file"
+            onclick="openFile('letters')"
+        >
+
+            <span class="file-number">
+                SEALED #003
+            </span>
+
+            <h3>
+                Open When...
+            </h3>
+
+            <p>
+                Six sealed letters for six different moments.
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="file"
+            onclick="openFile('letter')"
+        >
+
+            <span class="file-number">
+                PERSONAL #004
+            </span>
+
+            <h3>
+                The Things I Never Say
+            </h3>
+
+            <p>
+                No jokes. No investigation. Just honesty.
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="file"
+            onclick="openFile('classified')"
+        >
+
+            <span class="file-number">
+                █████ #005
+            </span>
+
+            <h3>
+                CLASSIFIED
+            </h3>
+
+            <p>
+                You probably shouldn't open this.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <footer>
+        END OF ARCHIVE // 2026
+    </footer>
+
+</section>
+
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="modal"
+>
+
+    <div class="modal-content">
+
+        <button
+            class="close"
+            onclick="closeFile()"
+        >
+            ×
+        </button>
+
+        <div id="modalText"></div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   TYPEWRITER
+========================================================= */
+
+const text =
+    "A file has been prepared for you.";
+
+let typeIndex = 0;
+
+function typeWriter() {
+
+    if (typeIndex < text.length) {
+
+        document.getElementById(
+            "typewriter"
+        ).textContent += text.charAt(typeIndex);
+
+        typeIndex++;
+
+        setTimeout(typeWriter, 55);
+
+    }
+
+}
+
+setTimeout(typeWriter, 1200);
+
+
+/* =========================================================
+   ENTER ARCHIVE
+========================================================= */
+
+function enterArchive() {
+
+    const landing =
+        document.getElementById("landing");
+
+    const archive =
+        document.getElementById("archive");
+
+
+    landing.style.transition =
+        "opacity 0.7s ease, transform 0.7s ease";
+
+    landing.style.opacity = "0";
+
+    landing.style.transform =
+        "scale(1.03)";
+
+
+    setTimeout(() => {
+
+        landing.style.display = "none";
+
+        archive.style.display = "block";
+
+        window.scrollTo(0, 0);
+
+    }, 700);
+
+}
+
+
+/* =========================================================
+   CAT
+========================================================= */
+
+function catClicked() {
+
+    alert(
+        "The cat has noticed you.\n\n" +
+        "This may be important later."
+    );
+
+}
+
+
+/* =========================================================
+   OPEN FILE
+========================================================= */
+
+function openFile(file) {
+
+    const modal =
+        document.getElementById("modal");
+
+    const content =
+        document.getElementById("modalText");
+
+
+    const files = {
+
+
+        case: `
+
+            <h2>
+                CASE FILE
+                <span class="red">#001</span>
+            </h2>
+
+            <p>
+                <strong>SUBJECT:</strong>
+                [RAIN]
+            </p>
+
+            <p>
+                This is where the investigation begins.
+            </p>
+
+            <p>
+                Somehow, somewhere, two idiots
+                started talking to each other...
+            </p>
+
+            <p>
+                <span class="red">
+                    24 August, 2026:
+                    I was just browsing Pbd as usual when I saw a request with someone asking "How to have confidence?"
+                    Coincidentally, I had seen a video on the same topic a few hours ago. So I thought "let's reply."
+                    And so we started talking.
+                </span>
+            </p>
+
+            <p>
+                18 Sep, 2026:
+                I don't know what we are now when you're seeing this,
+                but it was the first time I ever felt the feeling of
+                clicking with someone effortlessly.
+                I hope I never lose this.
+            </p>
+
+        `,
+
+
+        things: `
+
+            <h2>
+                20 THINGS I LIKE ABOUT YOU
+            </h2>
+
+            <p>
+                01. [Something you genuinely like]
+            </p>
+
+            <p>
+                02. [Another thing]
+            </p>
+
+            <p>
+                03. [Inside joke]
+            </p>
+
+            <p>
+                04. [Something about her personality]
+            </p>
+
+            <p>
+                05. [Something memorable]
+            </p>
+
+            <p>
+                ...and 15 more things.
+            </p>
+
+        `,
+
+
+        letters: `
+
+            <h2>
+                OPEN WHEN...
+            </h2>
+
+            <p>
+                These are six little letters.
+                Don't open all of them at once.
+            </p>
+
+            <div class="open-when-list">
+
+                <button
+                    class="open-when"
+                    onclick="openLetter('sad')"
+                >
+                    <span>SEALED LETTER #001</span>
+                    OPEN WHEN YOU ARE SAD
+                </button>
+
+                <button
+                    class="open-when"
+                    onclick="openLetter('happy')"
+                >
+                    <span>SEALED LETTER #002</span>
+                    OPEN WHEN YOU'RE HAPPY
+                </button>
+
+                <button
+                    class="open-when"
+                    onclick="openLetter('stressed')"
+                >
+                    <span>SEALED LETTER #003</span>
+                    OPEN WHEN YOU ARE STRESSED
+                </button>
+
+                <button
+                    class="open-when"
+                    onclick="openLetter('sleep')"
+                >
+                    <span>SEALED LETTER #004</span>
+                    OPEN WHEN YOU CAN'T SLEEP
+                </button>
+
+                <button
+                    class="open-when"
+                    onclick="openLetter('lonely')"
+                >
+                    <span>SEALED LETTER #005</span>
+                    OPEN WHEN YOU ARE LONELY
+                </button>
+
+                <button
+                    class="open-when"
+                    onclick="openLetter('worthless')"
+                >
+                    <span>SEALED LETTER #006</span>
+                    OPEN WHEN YOU FEEL WORTHLESS
+                </button>
+
+            </div>
+
+        `,
+
+
+        letter: `
+
+            <h2>
+                THE THINGS I NEVER SAY
+            </h2>
+
+            <p>
+                Hey, Di.
+            </p>
+
+            <p>
+                I don't really know how to write this
+                without making it unnecessarily dramatic.
+            </p>
+
+            <p>
+                So I'll just say it.
+            </p>
+
+            <p>
+                <span class="red">
+                    Thanks for existing and making it so far.
+                    I love you.
+                </span>
+            </p>
+
+            <p>
+                Happy birthday ❤️
+            </p>
+
+        `,
+
+
+        classified: `
+
+            <h2>
+                ⚠ CLASSIFIED
+            </h2>
+
+            <p>
+                You weren't supposed to find this.
+            </p>
+
+            <p>
+                But since you're already here...
+            </p>
+
+            <p>
+                <span class="red">
+                    HAPPY BIRTHDAY,
+                    YOU ABSOLUTE MENACE.
+                </span>
+            </p>
+
+            <p>
+                [PUT YOUR SECRET SURPRISE HERE]
+            </p>
+
+        `
+
+    };
+
+
+    content.innerHTML =
+        files[file];
+
+
+    modal.style.display =
+        "flex";
+
+}
+
+
+/* =========================================================
+   OPEN INDIVIDUAL LETTER
+========================================================= */
+
+function openLetter(letter) {
+
+    const content =
+        document.getElementById("modalText");
+
+
+    const letters = {
+
+
+        sad: `
+
+            <h2>
+                OPEN WHEN YOU ARE SAD
+            </h2>
+
+            <p>
+                Hey.
+            </p>
+
+            <p>
+                Whatever happened, take a breath first.
+                You don't have to fix everything right now.
+            </p>
+
+            <p>
+                [Write your personal message here.]
+            </p>
+
+            <p>
+                And remember:
+                one bad moment doesn't get to decide
+                what the rest of your day looks like.
+            </p>
+
+        `,
+
+
+        happy: `
+
+            <h2>
+                OPEN WHEN YOU'RE HAPPY
+            </h2>
+
+            <p>
+                WAIT.
+            </p>
+
+            <p>
+                You're actually happy??
+                Document this immediately.
+            </p>
+
+            <p>
+                [Write something playful here.]
+            </p>
+
+            <p>
+                Whatever made you smile today,
+                I hope you get many more moments like this.
+            </p>
+
+        `,
+
+
+        stressed: `
+
+            <h2>
+                OPEN WHEN YOU ARE STRESSED
+            </h2>
+
+            <p>
+                Stop for a second.
+            </p>
+
+            <p>
+                Unclench your jaw.
+                Drop your shoulders.
+                Take a slow breath.
+            </p>
+
+            <p>
+                [Write something comforting here.]
+            </p>
+
+            <p>
+                You don't have to solve your entire life
+                in one evening.
+            </p>
+
+        `,
+
+
+        sleep: `
+
+            <h2>
+                OPEN WHEN YOU CAN'T SLEEP
+            </h2>
+
+            <p>
+                So... your brain decided to become
+                extremely interesting at 2 AM?
+            </p>
+
+            <p>
+                [Write something calm and personal here.]
+            </p>
+
+            <p>
+                Put the phone down eventually, menace.
+                Tomorrow is another day.
+            </p>
+
+        `,
+
+
+        lonely: `
+
+            <h2>
+                OPEN WHEN YOU ARE LONELY
+            </h2>
+
+            <p>
+                Hey, you.
+            </p>
+
+            <p>
+                I know that feeling can get surprisingly heavy.
+            </p>
+
+            <p>
+                [Write something personal here.]
+            </p>
+
+            <p>
+                Even if we're not talking right now,
+                I hope this little letter reminds you
+                that someone thought about you enough
+                to make it.
+            </p>
+
+        `,
+
+
+        worthless: `
+
+            <h2>
+                OPEN WHEN YOU FEEL WORTHLESS
+            </h2>
+
+            <p>
+                Nope.
+            </p>
+
+            <p>
+                We're not accepting that conclusion today.
+            </p>
+
+            <p>
+                [Write something genuinely meaningful here.]
+            </p>
+
+            <p>
+                Your worth isn't something you have to earn
+                by being perfect, useful, productive,
+                or impressive.
+            </p>
+
+        `
+
+    };
+
+
+    content.innerHTML =
+        letters[letter];
+
+}
+
+
+/* =========================================================
+   CLOSE FILE
+========================================================= */
+
+function closeFile() {
+
+    document.getElementById(
+        "modal"
+    ).style.display = "none";
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL BY CLICKING OUTSIDE
+========================================================= */
+
+document
+    .getElementById("modal")
+    .addEventListener(
+        "click",
+        function(e) {
+
+            if (e.target === this) {
+
+                closeFile();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(e) {
+
+        if (e.key === "Escape") {
+
+            closeFile();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>
